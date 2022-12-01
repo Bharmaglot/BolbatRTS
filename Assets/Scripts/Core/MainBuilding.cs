@@ -8,7 +8,7 @@ public class MainBuilding : MonoBehaviour, IUnitProducer, ISelectable
     public float Health => _health;
     public float MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
-    public Outline OutlineObject => _outlineObject;
+    public Transform ObjectTransform => _objectTransform;
 
     [SerializeField] private GameObject _unitPrefab;
     [SerializeField] private Transform _unitsParent;
@@ -16,12 +16,14 @@ public class MainBuilding : MonoBehaviour, IUnitProducer, ISelectable
     [SerializeField] private float _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
 
+    [SerializeField] private Transform _objectTransform;
+
     private float _health = 1000;
-    Outline _outlineObject;
+
 
     private void Awake()
     {
-        _outlineObject = GetComponent<Outline>();
+
     }
 
 
@@ -30,6 +32,8 @@ public class MainBuilding : MonoBehaviour, IUnitProducer, ISelectable
         Instantiate(_unitPrefab, new Vector3(Random.Range(-10, 10), 0,
         Random.Range(-10, 10)), Quaternion.identity, _unitsParent);
     }
+
+
 }
 
 
