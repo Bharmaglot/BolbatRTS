@@ -1,11 +1,14 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MouseInteractionsPresenter : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private SelectableValue _selectedObject;
+    [SerializeField] private EventSystem _eventSystem;
+
 
     private void Update()
     {
@@ -19,7 +22,13 @@ public class MouseInteractionsPresenter : MonoBehaviour
         {
             return;
         }
+        
+        if (_eventSystem.IsPointerOverGameObject())
+        {
+            return;
+        }
 
+        
         var selectable = hits
         .Select(hit => hit.collider.GetComponentInParent<ISelectable>())
         .Where(c => c != null)

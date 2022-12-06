@@ -1,39 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MainBuilding : MonoBehaviour, IUnitProducer, ISelectable
+public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable
 {
 
     public float Health => _health;
     public float MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
+    
+    //Выделение объекта с первого урока
     public Transform ObjectTransform => _objectTransform;
+    [SerializeField] private Transform _objectTransform;
+    //конец
 
-    [SerializeField] private GameObject _unitPrefab;
     [SerializeField] private Transform _unitsParent;
-
+    
     [SerializeField] private float _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
-
-    [SerializeField] private Transform _objectTransform;
-
+      
     private float _health = 1000;
 
-
-    private void Awake()
+    public override void ExecuteSpecificCommand(IProduceUnitCommand command)
     {
-
-    }
-
-
-    public void ProduceUnit()
-    {
-        Instantiate(_unitPrefab, new Vector3(Random.Range(-10, 10), 0,
+        Instantiate(command.UnitPrefab, new Vector3(Random.Range(-10, 10), 0,
         Random.Range(-10, 10)), Quaternion.identity, _unitsParent);
     }
-
-
 }
 
 
