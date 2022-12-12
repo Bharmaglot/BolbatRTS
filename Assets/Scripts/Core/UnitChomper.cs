@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitChomper : CommandExecutorBase<IProduceUnitCommand>, ISelectable
+public class UnitChomper : MonoBehaviour, ISelectable
 {
     public float Health => _health;
     public float MaxHealth => _maxHealth;
@@ -16,8 +16,5 @@ public class UnitChomper : CommandExecutorBase<IProduceUnitCommand>, ISelectable
 
     private float _health = 100;
 
-    public override void ExecuteSpecificCommand(IProduceUnitCommand command)
-    {
 
-    }
 }
