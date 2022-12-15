@@ -5,6 +5,7 @@ public class UiModelInstaller : MonoInstaller
 {
     [SerializeField] private AssetsContext _legacyContext;
     [SerializeField] Vector3Value _vector3Value;
+    [SerializeField] AttackableValue _attackableValue;
 
     public override void InstallBindings()
     {

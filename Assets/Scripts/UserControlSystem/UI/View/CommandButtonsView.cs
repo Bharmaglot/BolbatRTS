@@ -43,10 +43,11 @@ public class CommandButtonsView : MonoBehaviour
         _produceUnitButton.GetComponent<Selectable>().interactable = value;
     }
 
-    public void MakeLayout(IEnumerable<ICommandExecutor> commandExecutors)
+    public void MakeLayout(List<ICommandExecutor> commandExecutors)
     {
-        foreach(var currentExecutor in commandExecutors)
+        for(int i = 0; i < commandExecutors.Count; i++ )
         {
+            var currentExecutor = commandExecutors[i];
             var buttonGameObject = getButtonGameObjectByType(currentExecutor.GetType());
             buttonGameObject.SetActive(true);
             var button = buttonGameObject.GetComponent<Button>();

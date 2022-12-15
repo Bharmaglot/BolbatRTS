@@ -5,8 +5,29 @@ public class AttackCommandCommandCreator : CommandCreatorBase<IAttackCommand>
 {
     [Inject] private AssetsContext _context;
 
-    protected override void classSpecificCommandCreation(Action<IAttackCommand> creationCallback)
+    private Action<IAttackCommand> _creationCallback;
+   
+    [Inject]
+    private void Init(AttackableValue groundClicks)
     {
-        creationCallback?.Invoke(_context.Inject(new AttackCommand()));
+        groundClicks.OnNewValue += OnNewValue;
+    }
+
+    private void OnNewValue(IAttackable attackable)
+    {
+        _creationCallback?.Invoke(_context.Inject(new AttackCommand(attackable)));
+        _creationCallback = null;
+    }
+
+    protected override void classSpecificCommandCreation(Action<IAttackCommand>
+    creationCallback)
+    {
+        _creationCallback = creationCallback;
+    }
+
+    public override void ProcessCancel()
+    {
+        base.ProcessCancel();
+        _creationCallback = null;
     }
 }
