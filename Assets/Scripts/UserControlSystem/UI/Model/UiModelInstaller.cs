@@ -6,11 +6,15 @@ public class UiModelInstaller : MonoInstaller
     [SerializeField] private AssetsContext _legacyContext;
     [SerializeField] Vector3Value _vector3Value;
     [SerializeField] AttackableValue _attackableValue;
+    [SerializeField] SelectableValue _selectedObject;
 
     public override void InstallBindings()
     {
         Container.Bind<AssetsContext>().FromInstance(_legacyContext);
         Container.Bind<Vector3Value>().FromInstance(_vector3Value);
+        Container.Bind<AttackableValue>().FromInstance(_attackableValue);
+        Container.Bind<SelectableValue>().FromInstance(_selectedObject);
+
         Container.Bind<CommandCreatorBase<IProduceUnitCommand>>().To<ProduceUnitCommandCommandCreator>().AsTransient();
         Container.Bind<CommandCreatorBase<IAttackCommand>>().To<AttackCommandCommandCreator>().AsTransient();
         Container.Bind<CommandCreatorBase<IMoveCommand>>().To<MoveCommandCommandCreator>().AsTransient();

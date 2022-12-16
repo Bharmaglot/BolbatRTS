@@ -8,9 +8,9 @@ public class AttackCommandCommandCreator : CommandCreatorBase<IAttackCommand>
     private Action<IAttackCommand> _creationCallback;
    
     [Inject]
-    private void Init(AttackableValue groundClicks)
+    private void Init(AttackableValue attackClicks)
     {
-        groundClicks.OnNewValue += OnNewValue;
+        attackClicks.OnNewValue += OnNewValue;
     }
 
     private void OnNewValue(IAttackable attackable)
@@ -19,8 +19,7 @@ public class AttackCommandCommandCreator : CommandCreatorBase<IAttackCommand>
         _creationCallback = null;
     }
 
-    protected override void classSpecificCommandCreation(Action<IAttackCommand>
-    creationCallback)
+    protected override void classSpecificCommandCreation(Action<IAttackCommand> creationCallback)
     {
         _creationCallback = creationCallback;
     }

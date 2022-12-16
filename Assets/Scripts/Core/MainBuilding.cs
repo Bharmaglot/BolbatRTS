@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable
+public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable, IAttackable
 {
 
     public float Health => _health;

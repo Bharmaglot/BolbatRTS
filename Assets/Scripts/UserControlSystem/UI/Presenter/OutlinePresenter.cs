@@ -10,7 +10,7 @@ public class OutlinePresenter : MonoBehaviour
 
     private void Start()
     {
-        _selectedValue.OnSelected += onSelected;
+        _selectedValue.OnNewValue += onSelected;
         onSelected(_selectedValue.CurrentValue);
         _Sphere.SetActive(false);
     }
