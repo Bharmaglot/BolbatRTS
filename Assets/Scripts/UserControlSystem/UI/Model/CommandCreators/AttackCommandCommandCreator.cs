@@ -1,32 +1,8 @@
 using System;
+using System.Threading;
 using Zenject;
 
-public class AttackCommandCommandCreator : CommandCreatorBase<IAttackCommand>
+public class AttackCommandCommandCreator : CancellableCommandCreatorBase<IAttackCommand, IAttackable>
 {
-    [Inject] private AssetsContext _context;
-
-    private Action<IAttackCommand> _creationCallback;
-   
-    [Inject]
-    private void Init(AttackableValue attackClicks)
-    {
-        attackClicks.OnNewValue += OnNewValue;
-    }
-
-    private void OnNewValue(IAttackable attackable)
-    {
-        _creationCallback?.Invoke(_context.Inject(new AttackCommand(attackable)));
-        _creationCallback = null;
-    }
-
-    protected override void classSpecificCommandCreation(Action<IAttackCommand> creationCallback)
-    {
-        _creationCallback = creationCallback;
-    }
-
-    public override void ProcessCancel()
-    {
-        base.ProcessCancel();
-        _creationCallback = null;
-    }
+    protected override IAttackCommand createCommand(IAttackable argument) => new AttackCommand(argument);
 }
