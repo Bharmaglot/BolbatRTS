@@ -5,7 +5,8 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
 {
     public class NewValueNotifier<TAwaited> : AwaiterBase<TAwaited>
     {
-        private readonly ScriptableObjectValueBase<TAwaited> _scriptableObjectValueBase;
+        private readonly ScriptableObjectValueBase<TAwaited>
+_scriptableObjectValueBase;
         public NewValueNotifier(ScriptableObjectValueBase<TAwaited>
         scriptableObjectValueBase)
         {
