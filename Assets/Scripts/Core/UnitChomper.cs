@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitChomper : MonoBehaviour, ISelectable, IAttackable
+public class UnitChomper : MonoBehaviour, ISelectable, IAttackable, IUnit
 {
     public float Health => _health;
     public float MaxHealth => _maxHealth;

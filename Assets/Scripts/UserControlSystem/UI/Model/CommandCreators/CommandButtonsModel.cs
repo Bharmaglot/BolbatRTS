@@ -1,5 +1,6 @@
 using System;
 using Zenject;
+using UnityEngine;
 
 public class CommandButtonsModel
 {
@@ -12,6 +13,8 @@ public class CommandButtonsModel
     [Inject] private CommandCreatorBase<IStopCommand> _stopper;
     [Inject] private CommandCreatorBase<IMoveCommand> _mover;
     [Inject] private CommandCreatorBase<IPatrolCommand> _patroller;
+    [Inject] private CommandCreatorBase<ISetRallyPointCommand> _setRaller;
+
 
     private bool _commandIsPending;
 
@@ -30,11 +33,12 @@ public class CommandButtonsModel
         _stopper.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
         _mover.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
         _patroller.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
+        _setRaller.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
     }
 
     public void executeCommandWrapper(ICommandExecutor commandExecutor, object command)
     {
-        commandExecutor.ExecuteCommand(command);
+        commandExecutor.TryExecuteCommand(command);
         _commandIsPending = false;
         OnCommandSent?.Invoke();
     }
@@ -52,6 +56,39 @@ public class CommandButtonsModel
         _stopper.ProcessCancel();
         _mover.ProcessCancel();
         _patroller.ProcessCancel();
+        _setRaller.ProcessCancel();
         OnCommandCancel?.Invoke();
+    }
+
+    public void OnCommandButtonClicked(ICommandExecutor commandExecutor, ICommandsQueue commandsQueue)
+    {
+        if (_commandIsPending)
+        {
+            processOnCancel();
+        }
+        _commandIsPending = true;
+        OnCommandAccepted?.Invoke(commandExecutor);
+        _unitProducer.ProcessCommandExecutor(commandExecutor, command =>
+        executeCommandWrapper(command, commandsQueue));
+        _attacker.ProcessCommandExecutor(commandExecutor, command =>
+        executeCommandWrapper(command, commandsQueue));
+        _stopper.ProcessCommandExecutor(commandExecutor, command =>
+        executeCommandWrapper(command, commandsQueue));
+        _mover.ProcessCommandExecutor(commandExecutor, command =>
+        executeCommandWrapper(command, commandsQueue));
+        _patroller.ProcessCommandExecutor(commandExecutor, command =>
+        executeCommandWrapper(command, commandsQueue));
+        _setRaller.ProcessCommandExecutor(commandExecutor, command =>
+        executeCommandWrapper(command, commandsQueue));
+    }
+    public void executeCommandWrapper(object command, ICommandsQueue commandsQueue)
+    {
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+        {
+            commandsQueue.Clear();
+        }
+        commandsQueue.EnqueueCommand(command);
+        _commandIsPending = false;
+        OnCommandSent?.Invoke();
     }
 }

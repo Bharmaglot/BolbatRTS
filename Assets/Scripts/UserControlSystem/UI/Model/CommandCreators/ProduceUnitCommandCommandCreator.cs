@@ -4,10 +4,14 @@ using Zenject;
 public class ProduceUnitCommandCommandCreator : CommandCreatorBase<IProduceUnitCommand>
 {
     [Inject] private AssetsContext _context;
+    [Inject] private DiContainer _diContainer;
+
 
     protected override void classSpecificCommandCreation(Action<IProduceUnitCommand> creationCallback)
     {
-        creationCallback?.Invoke(_context.Inject(new ProduceUnitCommand())); //(new ProduceUnitCommandHeir()));
+        var produceUnitCommand = _context.Inject(new ProduceUnitCommandHeir());
+        _diContainer.Inject(produceUnitCommand);
+        creationCallback?.Invoke(produceUnitCommand);
     }
 }
 
